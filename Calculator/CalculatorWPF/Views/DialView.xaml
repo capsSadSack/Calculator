@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="CalculatorWPF.Views.DialView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CalculatorWPF.Views"
+             xmlns:viewModels="clr-namespace:CalculatorWPF.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="70" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <viewModels:DialViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Numbers inside-->
+        <Grid Grid.Row="1" Grid.Column="1" Background="LightGray">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="firstTextBlock" Grid.Row="1" Grid.Column="1" 
+                       FontSize="14" FontFamily="Consolas" HorizontalAlignment="Right"
+                       Text="{Binding Path=FirstText}"/>
+            <TextBlock x:Name="operationTextBlock" Grid.Row="2" Grid.Column="1" 
+                       FontSize="14" FontFamily="Consolas" HorizontalAlignment="Right"
+                       Text="{Binding Path=OperationText}"/>
+            <TextBlock x:Name="secondTextBlock" Grid.Row="3" Grid.Column="1" 
+                       FontSize="14" FontFamily="Consolas" HorizontalAlignment="Right"
+                       Text="{Binding Path=SecondText}"/>
+
+        </Grid>
+    </Grid>
+</UserControl>
