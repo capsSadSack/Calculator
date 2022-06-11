@@ -10,6 +10,13 @@
     <UserControl.DataContext>
         <viewModels:DialViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <Style x:Key="ConsoleTextStyle" TargetType="TextBlock">
+            <Setter Property="TextBlock.FontSize" Value="14" />
+            <Setter Property="TextBlock.FontFamily" Value="Consolas" />
+            <Setter Property="TextBlock.HorizontalAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5"/>
@@ -38,13 +45,13 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock x:Name="firstTextBlock" Grid.Row="1" Grid.Column="1" 
-                       FontSize="14" FontFamily="Consolas" HorizontalAlignment="Right"
+                       Style="{StaticResource ConsoleTextStyle}"
                        Text="{Binding Path=FirstText}"/>
             <TextBlock x:Name="operationTextBlock" Grid.Row="2" Grid.Column="1" 
-                       FontSize="14" FontFamily="Consolas" HorizontalAlignment="Right"
+                       Style="{StaticResource ConsoleTextStyle}"                       
                        Text="{Binding Path=OperationText}"/>
             <TextBlock x:Name="secondTextBlock" Grid.Row="3" Grid.Column="1" 
-                       FontSize="14" FontFamily="Consolas" HorizontalAlignment="Right"
+                       Style="{StaticResource ConsoleTextStyle}"                       
                        Text="{Binding Path=SecondText}"/>
 
         </Grid>
