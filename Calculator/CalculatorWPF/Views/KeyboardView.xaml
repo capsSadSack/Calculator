@@ -1,0 +1,221 @@
+﻿<UserControl x:Class="CalculatorWPF.Views.KeyboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CalculatorWPF.Views"
+             xmlns:viewModels="clr-namespace:CalculatorWPF.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewModels:DialViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ControlTemplate x:Key="FigureButtonTemplate" TargetType="Button">
+            <Grid>
+                <Rectangle x:Name="ButtonRect" Height="40" Width="40" 
+                           Fill="SkyBlue"/>
+
+                <ContentPresenter Content="{TemplateBinding Content}" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="ButtonRect" Property="Fill" Value="DeepSkyBlue"/>
+                </Trigger>
+
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.8" ScaleY="0.8" 
+                                CenterX="0" CenterY="0"  />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransformOrigin" Value ="0.5,0.5" />
+                </Trigger>
+
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="OperationButtonTemplate" TargetType="Button">
+            <Grid>
+                <Rectangle x:Name="ButtonRect" Height="40" Width="40" >
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0.2" EndPoint="0.2,1.4">
+                            <GradientStop Offset="0" Color="MediumBlue" />
+                            <GradientStop Offset="1" Color="DeepSkyBlue" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <ContentPresenter Content="{TemplateBinding Content}" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="ButtonRect" Property="Fill" >
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0.2" EndPoint="0.2,1.4">
+                                <GradientStop Offset="0" Color="DeepSkyBlue" />
+                                <GradientStop Offset="1" Color="White" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+
+                <Trigger Property = "IsPressed" Value = "True">
+                    <Setter Property = "RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.8" ScaleY="0.8" 
+                                CenterX="0" CenterY="0" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+                </Trigger>
+
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="OtherButtonTemplate" TargetType="Button">
+            <Grid>
+                <Rectangle x:Name="ButtonRect" Height="40" Width="40" 
+                           Fill="RoyalBlue"/>
+
+                <ContentPresenter Content="{TemplateBinding Content}" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="ButtonRect" Property="Fill" Value="DeepSkyBlue"/>
+                </Trigger>
+
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.8" ScaleY="0.8" 
+                                CenterX="0" CenterY="0"  />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransformOrigin" Value ="0.5,0.5" />
+                </Trigger>
+
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="TextBlock.FontSize" Value="14" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+
+
+        <!--Figures-->
+        <Button x:Name="Button_1" Grid.Row="4" Grid.Column="1" 
+                Template="{StaticResource FigureButtonTemplate}"
+                Content="1" />
+
+        <Button x:Name="Button_2" Grid.Row="4" Grid.Column="2" 
+                Template = "{StaticResource FigureButtonTemplate}" 
+                Content="2"/>
+        
+        <Button x:Name="Button_3" Grid.Row="4" Grid.Column="3" 
+                Template="{StaticResource FigureButtonTemplate}"
+                Content="3" />
+
+        <Button x:Name="Button_4" Grid.Row="3" Grid.Column="1" 
+                Template = "{StaticResource FigureButtonTemplate}" 
+                Content="4"/>
+
+        <Button x:Name="Button_5" Grid.Row="3" Grid.Column="2" 
+                Template = "{StaticResource FigureButtonTemplate}" 
+                Content="5"/>
+
+        <Button x:Name="Button_6" Grid.Row="3" Grid.Column="3" 
+                Template = "{StaticResource FigureButtonTemplate}" 
+                Content="6"/>
+        
+        <Button x:Name="Button_7" Grid.Row="2" Grid.Column="1" 
+                Template = "{StaticResource FigureButtonTemplate}" 
+                Content="7"/>
+
+        <Button x:Name="Button_8" Grid.Row="2" Grid.Column="2" 
+                Template = "{StaticResource FigureButtonTemplate}" 
+                Content="8"/>
+
+        <Button x:Name="Button_9" Grid.Row="2" Grid.Column="3" 
+                Template = "{StaticResource FigureButtonTemplate}" 
+                Content="9"/>
+
+        <Button x:Name="Button_0" Grid.Row="5" Grid.Column="2" 
+                Template = "{StaticResource FigureButtonTemplate}" 
+                Content="0"/>
+
+        <!--Math Operations-->
+        <Button x:Name="Button_Plus" Grid.Row="1" Grid.Column="4" 
+                Template = "{StaticResource OperationButtonTemplate}" 
+                Content="+"/>
+
+        <Button x:Name="Button_Minus" Grid.Row="2" Grid.Column="4" 
+                Template = "{StaticResource OperationButtonTemplate}" 
+                Content="-"/>
+
+        <Button x:Name="Button_Multiply" Grid.Row="3" Grid.Column="4" 
+                Template = "{StaticResource OperationButtonTemplate}" 
+                Content="*"/>
+
+        <Button x:Name="Button_Divide" Grid.Row="4" Grid.Column="4" 
+                Template = "{StaticResource OperationButtonTemplate}" 
+                Content="/"/>
+        
+        <!--Other-->
+
+        <Button x:Name="Button_ChangeSign" Grid.Row="5" Grid.Column="1" 
+                Template = "{StaticResource OtherButtonTemplate}" 
+                Content="="/>
+
+        <Button x:Name="Button_Dot" Grid.Row="5" Grid.Column="3" 
+                Template = "{StaticResource OtherButtonTemplate}" 
+                Content="."/>
+
+        <Button x:Name="Button_Equals" Grid.Row="5" Grid.Column="4" 
+                Template = "{StaticResource OtherButtonTemplate}" 
+                Content="="/>
+
+        <Button x:Name="Button_C" Grid.Row="1" Grid.Column="1" 
+                Template = "{StaticResource OtherButtonTemplate}" 
+                Content="C"/>
+
+        <Button x:Name="Button_CE" Grid.Row="1" Grid.Column="2" 
+                Template = "{StaticResource OtherButtonTemplate}" 
+                Content="CE"/>
+
+        <Button x:Name="Button_Delete" Grid.Row="1" Grid.Column="3" 
+                Template = "{StaticResource OtherButtonTemplate}" 
+                Content="Del"/>
+
+    </Grid>
+</UserControl>

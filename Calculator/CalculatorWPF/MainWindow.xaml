@@ -20,5 +20,6 @@
         </Grid.ColumnDefinitions>
 
         <views:DialView Grid.Row="1" Grid.Column="1" />
+        <views:KeyboardView Grid.Row="2" Grid.Column="1" />
     </Grid>
 </Window>
