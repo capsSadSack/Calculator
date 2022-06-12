@@ -22,22 +22,22 @@ namespace CalculatorWPF.ViewModels
             new KeyboardButton{ Name = "Del" },
             new KeyboardButton{ Name = "+" },
 
-            new KeyboardButton{ Name = "7", ButtonClickedCommand = PrintFigure("7") }, 
-            new KeyboardButton{ Name = "8", ButtonClickedCommand = PrintFigure("8") }, 
-            new KeyboardButton{ Name = "9", ButtonClickedCommand = PrintFigure("9") }, 
+            new KeyboardButton{ Name = "7", ButtonClickedCommand = PrintFigure("7") },
+            new KeyboardButton{ Name = "8", ButtonClickedCommand = PrintFigure("8") },
+            new KeyboardButton{ Name = "9", ButtonClickedCommand = PrintFigure("9") },
             new KeyboardButton{ Name = "-" },
 
-            new KeyboardButton{ Name = "4", ButtonClickedCommand = PrintFigure("4") }, 
-            new KeyboardButton{ Name = "5", ButtonClickedCommand = PrintFigure("5") }, 
-            new KeyboardButton{ Name = "6", ButtonClickedCommand = PrintFigure("6") }, 
+            new KeyboardButton{ Name = "4", ButtonClickedCommand = PrintFigure("4") },
+            new KeyboardButton{ Name = "5", ButtonClickedCommand = PrintFigure("5") },
+            new KeyboardButton{ Name = "6", ButtonClickedCommand = PrintFigure("6") },
             new KeyboardButton{ Name = "*" },
 
-            new KeyboardButton{ Name = "1", ButtonClickedCommand = PrintFigure("1") }, 
-            new KeyboardButton{ Name = "2", ButtonClickedCommand = PrintFigure("2") }, 
-            new KeyboardButton{ Name = "3", ButtonClickedCommand = PrintFigure("3") }, 
+            new KeyboardButton{ Name = "1", ButtonClickedCommand = PrintFigure("1") },
+            new KeyboardButton{ Name = "2", ButtonClickedCommand = PrintFigure("2") },
+            new KeyboardButton{ Name = "3", ButtonClickedCommand = PrintFigure("3") },
             new KeyboardButton{ Name = "/" },
 
-            new KeyboardButton{ Name = "+/-" }, 
+            new KeyboardButton{ Name = "+/-" },
             new KeyboardButton{ Name = "0", ButtonClickedCommand = PrintFigure("0") }, 
             new KeyboardButton{ Name = "." }, 
             new KeyboardButton{ Name = "=" },
@@ -46,7 +46,8 @@ namespace CalculatorWPF.ViewModels
         private static ICommand PrintFigure(string figure)
         {
             // TODO: [CG, 2022.06.12] Заглушка
-            return new RelayCommand(null);
+            return new RelayCommand((obj) => 
+                Console.WriteLine("debug"));
         }
 
         public ObservableCollection<KeyboardButton> Buttons

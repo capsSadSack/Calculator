@@ -109,7 +109,7 @@
                 <DataTemplate>
                     <StackPanel>
                         <Button Width="40" Height="40"
-                            Command="{Binding ButtonClicked2}"
+                            Command="{Binding ButtonClickedCommand}"
                                 CommandParameter="{Binding Name}">
                             <TextBlock FontSize="12" HorizontalAlignment="Center" 
                                  Text="{Binding Name}" />
