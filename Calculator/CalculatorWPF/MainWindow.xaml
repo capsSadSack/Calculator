@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalculatorWPF" xmlns:views="clr-namespace:CalculatorWPF.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="300">
+        Title="MainWindow" Height="350" Width="225">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5"/>
@@ -20,5 +20,6 @@
         </Grid.ColumnDefinitions>
 
         <views:DialView Grid.Row="1" Grid.Column="1" />
+        <views:KeyboardView Grid.Row="2" Grid.Column="1" />
     </Grid>
 </Window>
