@@ -13,5 +13,24 @@ namespace CalculatorWPF
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            Bootstrapper.Start();
+
+            var window = new MainView();
+
+            window.DataContext = Bootstrapper.RootVisual;
+
+            window.Closed += (s, a) =>
+            {
+                Bootstrapper.Stop();
+            };
+
+
+            window.Show();
+
+        }
     }
 }
