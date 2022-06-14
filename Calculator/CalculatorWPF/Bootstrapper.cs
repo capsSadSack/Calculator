@@ -6,70 +6,77 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
+using CalculatorWPF.EventAggregation;
 using CalculatorWPF.ViewModels;
 
 namespace CalculatorWPF
 {
     internal static class Bootstrapper
     {
-        private static ILifetimeScope _rootScope;
+        public static ILifetimeScope RootScope { get; private set; }
+
         private static IMainViewModel _mainViewModel;
 
         public static IViewModel RootVisual
         {
             get
             {
-                if (_rootScope == null)
+                if (RootScope == null)
                 {
                     Start();
                 }
 
-                _mainViewModel = _rootScope.Resolve<IMainViewModel>();
+                _mainViewModel = RootScope.Resolve<IMainViewModel>();
                 return _mainViewModel;
             }
         }
 
         public static void Start()
         {
-            if (_rootScope != null)
+            if (RootScope != null)
             {
                 return;
             }
 
             var builder = new ContainerBuilder();
-            var assemblies = new[] { Assembly.GetExecutingAssembly() };
+
+            builder.RegisterType<EventAggregator>()
+                .As<IEventAggregator>()
+                .SingleInstance();
 
             builder.RegisterType<MainViewModel>()
                 .As<IMainViewModel>()
                 .SingleInstance();
-                
 
-            _rootScope = builder.Build();
+            builder.RegisterType<MainView>()
+                .SingleInstance();
+
+            RootScope = builder.Build();
         }
 
         public static void Stop()
         {
-            _rootScope.Dispose();
+            RootScope.Dispose();
         }
 
         public static T Resolve<T>()
         {
-            if (_rootScope == null)
+            if (RootScope == null)
             {
                 throw new Exception("Bootstrapper hasn't been started!");
             }
 
-            return _rootScope.Resolve<T>(new Parameter[0]);
+            return RootScope.Resolve<T>(new Parameter[0]);
         }
 
         public static T Resolve<T>(Parameter[] parameters)
         {
-            if (_rootScope == null)
+            if (RootScope == null)
             {
                 throw new Exception("Bootstrapper hasn't been started!");
             }
 
-            return _rootScope.Resolve<T>(parameters);
+            return RootScope.Resolve<T>(parameters);
         }
     }
 }

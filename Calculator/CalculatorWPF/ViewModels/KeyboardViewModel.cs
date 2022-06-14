@@ -10,10 +10,11 @@ using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using CalculatorWPF.Commands;
 using System.Windows.Input;
+using CalculatorWPF.EventAggregation;
 
 namespace CalculatorWPF.ViewModels
 {
-    internal class KeyboardViewModel : INotifyPropertyChanged
+    internal class KeyboardViewModel : IViewModel
     {
         private ObservableCollection<KeyboardButton> _buttons = new ObservableCollection<KeyboardButton>()
         {
@@ -43,6 +44,13 @@ namespace CalculatorWPF.ViewModels
             new KeyboardButton{ Name = "=" },
         };
 
+        //private readonly IEventAggregator _eventAggregator;
+
+        //public KeyboardViewModel(IEventAggregator eventAggregator)
+        //{
+        //    _eventAggregator = eventAggregator;
+        //}
+
         private static ICommand PrintFigure(string figure)
         {
             // TODO: [CG, 2022.06.12] Заглушка
@@ -60,11 +68,16 @@ namespace CalculatorWPF.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
 
         public class KeyboardButton

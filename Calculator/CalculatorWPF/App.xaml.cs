@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -19,7 +20,7 @@ namespace CalculatorWPF
 
             Bootstrapper.Start();
 
-            var window = new MainView();
+            var window = Bootstrapper.RootScope.Resolve<MainView>();
 
             window.DataContext = Bootstrapper.RootVisual;
 

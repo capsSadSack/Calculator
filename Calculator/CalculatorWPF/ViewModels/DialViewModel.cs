@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalculatorWPF.EventAggregation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -43,7 +44,14 @@ namespace CalculatorWPF.ViewModels
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //private readonly IEventAggregator _eventAggregator;
+
+        //public DialViewModel(IEventAggregator eventAggregator)
+        //{
+        //    _eventAggregator = eventAggregator;
+        //}
+
+        public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged(string prop)
         {
             if (PropertyChanged != null)
