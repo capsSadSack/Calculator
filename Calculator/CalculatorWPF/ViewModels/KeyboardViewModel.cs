@@ -13,6 +13,7 @@ using System.Windows.Input;
 using CalculatorWPF.EventAggregation;
 using CalculatorWPF.EventModels;
 using System.Diagnostics;
+using CalculatorWPF.Models;
 
 namespace CalculatorWPF.ViewModels
 {
@@ -27,9 +28,9 @@ namespace CalculatorWPF.ViewModels
 
             var buttons = new List<KeyboardButton>()
             {
-                new KeyboardButton{ Name = "C" },
-                new KeyboardButton{ Name = "CE" },
-                new KeyboardButton{ Name = "Del" },
+                new KeyboardButton{ Name = "C", ButtonClickedCommand = SetInstantOperation(InstantOperation.C) },
+                new KeyboardButton{ Name = "CE", ButtonClickedCommand = SetInstantOperation(InstantOperation.CE) },
+                new KeyboardButton{ Name = "Del", ButtonClickedCommand = SetInstantOperation(InstantOperation.DeleteLastFigure) },
                 new KeyboardButton{ Name = "+", ButtonClickedCommand = SetOperation(Operation.Plus) },
 
                 new KeyboardButton{ Name = "7", ButtonClickedCommand = PrintFigure("7") },
@@ -47,10 +48,10 @@ namespace CalculatorWPF.ViewModels
                 new KeyboardButton{ Name = "3", ButtonClickedCommand = PrintFigure("3") },
                 new KeyboardButton{ Name = "/", ButtonClickedCommand = SetOperation(Operation.Divide) },
 
-                new KeyboardButton{ Name = "+/-" },
+                new KeyboardButton{ Name = "+/-", ButtonClickedCommand = SetInstantOperation(InstantOperation.ChangeSign) },
                 new KeyboardButton{ Name = "0", ButtonClickedCommand = PrintFigure("0") },
                 new KeyboardButton{ Name = "." },
-                new KeyboardButton{ Name = "=" },
+                new KeyboardButton{ Name = "=", ButtonClickedCommand = SetInstantOperation(InstantOperation.Equals) },
             };
 
             foreach(var button in buttons)
@@ -75,6 +76,15 @@ namespace CalculatorWPF.ViewModels
             {
                 _eventAggregator.Notify(new KeyboardOperationPressedEventModel(operation));
                 Debug.WriteLine("debug-operation");
+            });
+        }
+
+        private ICommand SetInstantOperation(InstantOperation instantOperation)
+        {
+            return new RelayCommand((obj) =>
+            {
+                _eventAggregator.Notify(new KeyboardInstantOperationPressedEventModel(instantOperation));
+                Debug.WriteLine("debug-instant-operation");
             });
         }
 

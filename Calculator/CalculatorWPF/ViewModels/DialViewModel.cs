@@ -1,5 +1,6 @@
 ﻿using CalculatorWPF.EventAggregation;
 using CalculatorWPF.EventModels;
+using CalculatorWPF.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,8 +13,10 @@ namespace CalculatorWPF.ViewModels
 {
     internal class DialViewModel : 
         IViewModel, 
+        IHandle<KeyboardDotPressedEvent>,
         IHandle<KeyboardFigurePressedEventModel>,
-        IHandle<KeyboardOperationPressedEventModel>
+        IHandle<KeyboardOperationPressedEventModel>,
+        IHandle<KeyboardInstantOperationPressedEventModel>
     {
         private string _firstText = "0";
         public string FirstText 
@@ -54,8 +57,10 @@ namespace CalculatorWPF.ViewModels
         {
             _eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
 
+            _eventAggregator.Subscribe<KeyboardDotPressedEvent>(this);
             _eventAggregator.Subscribe<KeyboardFigurePressedEventModel>(this);
             _eventAggregator.Subscribe<KeyboardOperationPressedEventModel>(this);
+            _eventAggregator.Subscribe<KeyboardInstantOperationPressedEventModel>(this);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -89,6 +94,24 @@ namespace CalculatorWPF.ViewModels
                 case (Operation.Divide): operationText = "/"; break;
             }
             OperationText = operationText;
+        }
+
+        public void Handle(KeyboardDotPressedEvent message)
+        {
+            //TODO: [CG, 2022.06.15] 
+        }
+
+        public void Handle(KeyboardInstantOperationPressedEventModel message)
+        {
+            _isFirstFieldActive = false;
+            _isOperationActive = true;
+            _isSecondFieldActive = true;
+
+            SecondText = "";
+            OperationText = "";
+            CurrentOperation = null;
+
+            // TODO: [CG, 2022.06.15] Call controller
         }
 
         public void Handle(KeyboardFigurePressedEventModel message)

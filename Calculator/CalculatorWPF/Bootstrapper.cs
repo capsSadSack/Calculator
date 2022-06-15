@@ -55,13 +55,7 @@ namespace CalculatorWPF
             builder.RegisterType<KeyboardViewModel>()
                 .SingleInstance();
 
-            builder.RegisterType<KeyboardView>()
-                .SingleInstance();
-
             builder.RegisterType<DialViewModel>()
-                .SingleInstance();
-
-            builder.RegisterType<DialView>()
                 .SingleInstance();
 
             RootScope = builder.Build();

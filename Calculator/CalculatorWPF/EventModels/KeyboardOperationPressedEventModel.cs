@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalculatorWPF.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,13 +15,5 @@ namespace CalculatorWPF.EventModels
         {
             Operation = operation;
         }
-    }
-
-    public enum Operation
-    {
-        Plus,
-        Minus,
-        Multiply,
-        Divide
     }
 }
