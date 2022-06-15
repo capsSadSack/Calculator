@@ -50,7 +50,7 @@ namespace CalculatorWPF.ViewModels
 
                 new KeyboardButton{ Name = "+/-", ButtonClickedCommand = SetInstantOperation(InstantOperation.ChangeSign) },
                 new KeyboardButton{ Name = "0", ButtonClickedCommand = PrintFigure("0") },
-                new KeyboardButton{ Name = "." },
+                new KeyboardButton{ Name = ".", ButtonClickedCommand = PrintDot() },
                 new KeyboardButton{ Name = "=", ButtonClickedCommand = SetInstantOperation(InstantOperation.Equals) },
             };
 
@@ -60,6 +60,14 @@ namespace CalculatorWPF.ViewModels
             }
         }
 
+        private ICommand PrintDot()
+        {
+            return new RelayCommand((obj) =>
+            {
+                _eventAggregator.Notify(new KeyboardDotPressedEvent());
+                Debug.WriteLine("debug-dot");
+            });
+        }
 
         private ICommand PrintFigure(string figure)
         {

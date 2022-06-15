@@ -94,11 +94,29 @@ namespace CalculatorWPF.ViewModels
                 case (Operation.Divide): operationText = "/"; break;
             }
             OperationText = operationText;
+
+            FirstText = UpdateNumber(FirstText);
+        }
+
+        private string UpdateNumber(string text)
+        {
+            string updatedNumber = double.Parse(text).ToString();
+            return updatedNumber;
         }
 
         public void Handle(KeyboardDotPressedEvent message)
         {
-            //TODO: [CG, 2022.06.15] 
+            if (_isFirstFieldActive)
+            {
+                FirstText = AddDot(FirstText);
+                _isOperationActive = true;
+            }
+            else if (_isSecondFieldActive)
+            {
+                SecondText = AddDot(SecondText);
+                _isOperationActive = false;
+            }
+
         }
 
         public void Handle(KeyboardInstantOperationPressedEventModel message)
@@ -126,6 +144,40 @@ namespace CalculatorWPF.ViewModels
                 SecondText = AddFigure(SecondText, message.Figure);
                 _isOperationActive = false;
             }
+        }
+
+        private string AddDot(string number)
+        {
+            if (CountDotsInNumber(number) == 0)
+            {
+                if (number == "")
+                {
+                    return "0.";
+                }
+                else
+                {
+                    return number + '.';
+                }
+            }
+            else
+            {
+                return number;
+            }
+        }
+
+        private int CountDotsInNumber(string number)
+        {
+            int counter = 0;
+
+            for(int i = 0; i < number.Length; i++)
+            {
+                if (number[i] == '.')
+                {
+                    counter++;
+                }
+            }
+
+            return counter;
         }
 
         private string AddFigure(string number, string figure)
