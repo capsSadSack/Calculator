@@ -30,9 +30,8 @@ namespace CalculatorWPF.Controllers
 
         #endregion
 
-        public event EventHandler<string> OnExceptionOccur;
 
-        public decimal Calculate(decimal number1, decimal number2, Operation operation)
+        public bool TryCalculate(decimal number1, decimal number2, Operation operation, out decimal result)
         {
             Func<decimal, decimal, decimal> calcDelegate = CalculateAddition;
 
@@ -44,36 +43,36 @@ namespace CalculatorWPF.Controllers
                 case Operation.Divide: calcDelegate = CaclulateDivision; break;
             }
 
-            return calcDelegate(number1, number2);
+            try
+            {
+                result = calcDelegate(number1, number2);
+                return true;
+            }
+            catch (Exception)
+            {
+                result = 0;
+                return false;
+            }
         }
 
-        public decimal CalculateAddition(decimal number, decimal numberToAdd)
+        private decimal CalculateAddition(decimal number, decimal numberToAdd)
         {
             return number + numberToAdd;
         }
 
-        public decimal CaclulateSubtraction(decimal number, decimal numberToSubtract)
+        private decimal CaclulateSubtraction(decimal number, decimal numberToSubtract)
         {
             return number - numberToSubtract;
         }
 
-        public decimal CaclulateMultiplication(decimal number, decimal multiplier)
+        private decimal CaclulateMultiplication(decimal number, decimal multiplier)
         {
             return number * multiplier;
         }
 
-        public decimal CaclulateDivision(decimal number, decimal divider)
+        private decimal CaclulateDivision(decimal number, decimal divider)
         {
-            try
-            {
-                return number / divider;
-            }
-            catch
-            {
-                OnExceptionOccur?.Invoke(this, "");
-                // TODO: [CG, 2022.06.15] Unexpected behaviour
-                return 0;
-            }
+            return number / divider;
         }
     }
 }

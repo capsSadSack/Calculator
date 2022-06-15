@@ -101,8 +101,14 @@ namespace CalculatorWPF.ViewModels
 
         private string UpdateNumber(string text)
         {
-            string updatedNumber = decimal.Parse(text).ToString();
-            return updatedNumber;
+            if (decimal.TryParse(text, out decimal number))
+            {
+                return number.ToString();
+            }
+            else
+            {
+                return "0";
+            }
         }
 
         public void Handle(KeyboardDotPressedEvent message)
@@ -130,9 +136,18 @@ namespace CalculatorWPF.ViewModels
             {
                 case InstantOperation.Equals:
                     {
-                        decimal result = _calculationController.Calculate(number1, number2, (Operation)_currentOperation);
-                        SetState(State.OperationUnderResult);
-                        SetTextFields(result.ToString(), "", "");
+                        if (_calculationController.TryCalculate(number1, number2, (Operation)_currentOperation,
+                            out decimal result))
+                        {
+                            SetState(State.OperationUnderResult);
+                            SetTextFields(result.ToString(), "", "");
+                        }
+                        else
+                        {
+                            SetState(State.FirstNumberEntering);
+                            SetTextFields("Error", "", "");
+                        }
+                        
                         break;
                     }
 
