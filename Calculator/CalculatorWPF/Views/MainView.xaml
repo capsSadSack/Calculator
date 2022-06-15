@@ -8,9 +8,9 @@
         xmlns:viewModels="clr-namespace:CalculatorWPF.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="225">
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <viewModels:MainViewModel />
-    </Window.DataContext>
+    </Window.DataContext>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5"/>

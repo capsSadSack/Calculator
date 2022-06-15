@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace CalculatorWPF.EventAggregator
+namespace CalculatorWPF.EventAggregation
 {
-    internal static class EventSystem
+    public interface IHandle<T>
     {
+        void Handle(T message);
     }
 }
