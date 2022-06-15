@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using CalculatorWPF.EventAggregation;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,7 +21,8 @@ namespace CalculatorWPF
 
             Bootstrapper.Start();
 
-            var window = Bootstrapper.RootScope.Resolve<MainView>();
+            //var eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
+            var window = Bootstrapper.Resolve<MainView>();
 
             window.DataContext = Bootstrapper.RootVisual;
 

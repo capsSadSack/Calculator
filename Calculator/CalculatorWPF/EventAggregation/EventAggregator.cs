@@ -37,13 +37,13 @@ namespace CalculatorWPF.EventAggregation
 
                 foreach (var subscriber in subscribers)
                 {
-                    var sub = (AHandle<T>)subscriber;
-                    sub.HandleAsync(message, _tokenSource.Token);
+                    var sub = (IHandle<T>)subscriber;
+                    sub.Handle(message);
                 }
             }
         }
 
-        public void Subscribe<T>(AHandle<T> subscriber)
+        public void Subscribe<T>(IHandle<T> subscriber)
         {
             Type messageType = typeof(T);
 
@@ -55,7 +55,7 @@ namespace CalculatorWPF.EventAggregation
             _subscribers[messageType].Add(subscriber);
         }
 
-        public void Unsubscribe<T>(AHandle<T> subscriber)
+        public void Unsubscribe<T>(IHandle<T> subscriber)
         {
             Type messageType = typeof(T);
 

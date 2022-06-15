@@ -8,6 +8,7 @@ using Autofac;
 using Autofac.Core;
 using CalculatorWPF.EventAggregation;
 using CalculatorWPF.ViewModels;
+using CalculatorWPF.Views;
 
 namespace CalculatorWPF
 {
@@ -51,6 +52,18 @@ namespace CalculatorWPF
             builder.RegisterType<MainView>()
                 .SingleInstance();
 
+            builder.RegisterType<KeyboardViewModel>()
+                .SingleInstance();
+
+            builder.RegisterType<KeyboardView>()
+                .SingleInstance();
+
+            builder.RegisterType<DialViewModel>()
+                .SingleInstance();
+
+            builder.RegisterType<DialView>()
+                .SingleInstance();
+
             RootScope = builder.Build();
         }
 
@@ -66,17 +79,7 @@ namespace CalculatorWPF
                 throw new Exception("Bootstrapper hasn't been started!");
             }
 
-            return RootScope.Resolve<T>(new Parameter[0]);
-        }
-
-        public static T Resolve<T>(Parameter[] parameters)
-        {
-            if (RootScope == null)
-            {
-                throw new Exception("Bootstrapper hasn't been started!");
-            }
-
-            return RootScope.Resolve<T>(parameters);
+            return RootScope.Resolve<T>();
         }
     }
 }
