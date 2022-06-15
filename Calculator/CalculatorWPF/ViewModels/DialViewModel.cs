@@ -128,20 +128,68 @@ namespace CalculatorWPF.ViewModels
             _isOperationActive = true;
             _isSecondFieldActive = true;
 
-            // TODO: [CG, 2022.06.15] Call controller
-            double number1 = double.Parse(FirstText);
-            double number2 = double.Parse(SecondText);
-            double result = 0;
+            double.TryParse(FirstText, out double number1);
+            double.TryParse(SecondText, out double number2);
 
             switch(message.InstantOperation)
             {            
-                case InstantOperation.Equals: result = _calculationController.Calculate(number1, number2, (Operation)_currentOperation); break;
-            }
+                case InstantOperation.Equals: 
+                    double result = _calculationController.Calculate(number1, number2, (Operation)_currentOperation);
+                    SetState(State.OperationUnderResult);
+                    SetTextFields(result.ToString(), "", "");
+                    break;
 
-            FirstText = result.ToString();
-            SecondText = "";
-            OperationText = "";
-            _currentOperation = null;
+                case InstantOperation.CE: 
+                    SetState(State.FirstNumberEntering);
+                    SetTextFields("0", "", "");
+                    break;
+
+                case InstantOperation.C:
+                    if (_isFirstFieldActive)
+                    {
+                        SetState(State.FirstNumberEntering);
+                        SetTextFields("0", "", "");
+                    }
+                    else if (_isSecondFieldActive && _isOperationActive == false)
+                    {
+                        SetState(State.ChangeOperationOrSecondNumberEntering);
+                        SetTextFields(FirstText, OperationText, "");
+                    }
+                    else if (_isSecondFieldActive && _isOperationActive)
+                    {
+                        SetState(State.SecondNumberEntering);
+                        SetTextFields(FirstText, OperationText, "");
+                    }
+
+                    break;
+
+                case InstantOperation.DeleteLastFigure:
+                    if(_isFirstFieldActive)
+                    {
+                        if(FirstText.Length > 0)
+                        {
+                            SetTextFields(RemoveLastFigure(FirstText), OperationText, SecondText);
+                        }
+                    }
+                    if(_isSecondFieldActive)
+                    {
+                        if (SecondText.Length > 0)
+                        {
+                            SetTextFields(FirstText, OperationText, RemoveLastFigure(SecondText));
+                        }
+                    }
+
+                    break;
+
+                case InstantOperation.ChangeSign:
+
+                    break;
+            }
+        }
+
+        private string RemoveLastFigure(string number)
+        {
+            return number.Substring(0, number.Length - 1);
         }
 
         public void Handle(KeyboardFigurePressedEventModel message)
@@ -149,12 +197,12 @@ namespace CalculatorWPF.ViewModels
             if (_isFirstFieldActive)
             {
                 FirstText = AddFigure(FirstText, message.Figure);
-                _isOperationActive = true;
+                SetState(State.FirstNumberEntering);
             }
             else if(_isSecondFieldActive)
             {
                 SecondText = AddFigure(SecondText, message.Figure);
-                _isOperationActive = false;
+                SetState(State.SecondNumberEntering);
             }
         }
 
@@ -208,5 +256,51 @@ namespace CalculatorWPF.ViewModels
         private bool _isSecondFieldActive = false;
         private bool _isOperationActive = false;
         private Operation? _currentOperation = null;
+
+
+        private void SetState(State state)
+        {
+            switch (state)
+            {
+                case State.FirstNumberEntering:
+                    _isFirstFieldActive = true;
+                    _isOperationActive = true;
+                    _isSecondFieldActive = false;
+                    break;
+
+                case State.ChangeOperationOrSecondNumberEntering:
+                    _isFirstFieldActive = false;
+                    _isOperationActive = true;
+                    _isSecondFieldActive = true;
+                    break;
+
+                case State.SecondNumberEntering:
+                    _isFirstFieldActive = false;
+                    _isOperationActive = false;
+                    _isSecondFieldActive = true;
+                    break;
+                
+                case State.OperationUnderResult:
+                    _isFirstFieldActive = false;
+                    _isOperationActive = true;
+                    _isSecondFieldActive = false;
+                    break;
+            }
+        }
+
+        public void SetTextFields(string firstText, string operationText, string secondText)
+        {
+            FirstText = firstText;
+            OperationText = operationText;
+            SecondText = secondText;
+        }
+
+        private enum State
+        {
+            FirstNumberEntering,
+            ChangeOperationOrSecondNumberEntering,
+            SecondNumberEntering,
+            OperationUnderResult
+        }
     }
 }
