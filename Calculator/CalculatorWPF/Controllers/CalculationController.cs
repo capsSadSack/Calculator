@@ -30,11 +30,10 @@ namespace CalculatorWPF.Controllers
 
         #endregion
 
-        public event EventHandler<string> OnExceptionOccur;
 
-        public double Calculate(double number1, double number2, Operation operation)
+        public bool TryCalculate(decimal number1, decimal number2, Operation operation, out decimal result)
         {
-            Func<double, double, double> calcDelegate = CalculateAddition;
+            Func<decimal, decimal, decimal> calcDelegate = CalculateAddition;
 
             switch (operation)
             {
@@ -44,36 +43,36 @@ namespace CalculatorWPF.Controllers
                 case Operation.Divide: calcDelegate = CaclulateDivision; break;
             }
 
-            return calcDelegate(number1, number2);
+            try
+            {
+                result = calcDelegate(number1, number2);
+                return true;
+            }
+            catch (Exception)
+            {
+                result = 0;
+                return false;
+            }
         }
 
-        public double CalculateAddition(double number, double numberToAdd)
+        private decimal CalculateAddition(decimal number, decimal numberToAdd)
         {
             return number + numberToAdd;
         }
 
-        public double CaclulateSubtraction(double number, double numberToSubtract)
+        private decimal CaclulateSubtraction(decimal number, decimal numberToSubtract)
         {
             return number - numberToSubtract;
         }
 
-        public double CaclulateMultiplication(double number, double multiplier)
+        private decimal CaclulateMultiplication(decimal number, decimal multiplier)
         {
             return number * multiplier;
         }
 
-        public double CaclulateDivision(double number, double divider)
+        private decimal CaclulateDivision(decimal number, decimal divider)
         {
-            try
-            {
-                return number / divider;
-            }
-            catch
-            {
-                OnExceptionOccur?.Invoke(this, "");
-                // TODO: [CG, 2022.06.15] Unexpected behaviour
-                return 0;
-            }
+            return number / divider;
         }
     }
 }
