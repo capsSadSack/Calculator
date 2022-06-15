@@ -1,4 +1,5 @@
-﻿using CalculatorWPF.EventAggregation;
+﻿using CalculatorWPF.Controllers;
+using CalculatorWPF.EventAggregation;
 using CalculatorWPF.EventModels;
 using CalculatorWPF.Models;
 using System;
@@ -52,9 +53,11 @@ namespace CalculatorWPF.ViewModels
         }
 
         private readonly IEventAggregator _eventAggregator;
-
+        private readonly CalculationController _calculationController;
         public DialViewModel()
         {
+            _calculationController = CalculationController.GetInstance();
+
             _eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
 
             _eventAggregator.Subscribe<KeyboardDotPressedEvent>(this);
@@ -83,7 +86,7 @@ namespace CalculatorWPF.ViewModels
             _isOperationActive = true;
             _isSecondFieldActive = true;
 
-            CurrentOperation = message.Operation;
+            _currentOperation = message.Operation;
 
             string operationText = "";
             switch (message.Operation)
@@ -125,11 +128,20 @@ namespace CalculatorWPF.ViewModels
             _isOperationActive = true;
             _isSecondFieldActive = true;
 
+            // TODO: [CG, 2022.06.15] Call controller
+            double number1 = double.Parse(FirstText);
+            double number2 = double.Parse(SecondText);
+            double result = 0;
+
+            switch(message.InstantOperation)
+            {            
+                case InstantOperation.Equals: result = _calculationController.Calculate(number1, number2, (Operation)_currentOperation); break;
+            }
+
+            FirstText = result.ToString();
             SecondText = "";
             OperationText = "";
-            CurrentOperation = null;
-
-            // TODO: [CG, 2022.06.15] Call controller
+            _currentOperation = null;
         }
 
         public void Handle(KeyboardFigurePressedEventModel message)
@@ -195,6 +207,6 @@ namespace CalculatorWPF.ViewModels
         private bool _isFirstFieldActive = true;
         private bool _isSecondFieldActive = false;
         private bool _isOperationActive = false;
-        private Operation? CurrentOperation = null;
+        private Operation? _currentOperation = null;
     }
 }
