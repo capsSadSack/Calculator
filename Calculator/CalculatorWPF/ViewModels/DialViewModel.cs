@@ -82,9 +82,7 @@ namespace CalculatorWPF.ViewModels
 
         public void Handle(KeyboardOperationPressedEventModel message)
         {
-            _isFirstFieldActive = false;
-            _isOperationActive = true;
-            _isSecondFieldActive = true;
+            SetState(State.ChangeOperationOrSecondNumberEntering);
 
             _currentOperation = message.Operation;
 
@@ -109,12 +107,13 @@ namespace CalculatorWPF.ViewModels
 
         public void Handle(KeyboardDotPressedEvent message)
         {
-            if (_isFirstFieldActive)
+            if (_currentState == State.FirstNumberEntering)
             {
                 FirstText = AddDot(FirstText);
                 _isOperationActive = true;
             }
-            else if (_isSecondFieldActive)
+            else if (_currentState == State.SecondNumberEntering ||
+                _currentState == State.ChangeOperationOrSecondNumberEntering)
             {
                 SecondText = AddDot(SecondText);
                 _isOperationActive = false;
@@ -124,37 +123,125 @@ namespace CalculatorWPF.ViewModels
 
         public void Handle(KeyboardInstantOperationPressedEventModel message)
         {
-            _isFirstFieldActive = false;
-            _isOperationActive = true;
-            _isSecondFieldActive = true;
+            double.TryParse(FirstText, out double number1);
+            double.TryParse(SecondText, out double number2);
 
-            // TODO: [CG, 2022.06.15] Call controller
-            double number1 = double.Parse(FirstText);
-            double number2 = double.Parse(SecondText);
-            double result = 0;
+            switch (message.InstantOperation)
+            {
+                case InstantOperation.Equals:
+                    {
+                        double result = _calculationController.Calculate(number1, number2, (Operation)_currentOperation);
+                        SetState(State.OperationUnderResult);
+                        SetTextFields(result.ToString(), "", "");
+                        break;
+                    }
 
-            switch(message.InstantOperation)
-            {            
-                case InstantOperation.Equals: result = _calculationController.Calculate(number1, number2, (Operation)_currentOperation); break;
+                case InstantOperation.CE:
+                    {
+                        SetState(State.FirstNumberEntering);
+                        SetTextFields("0", "", "");
+                        break;
+                    }
+
+                case InstantOperation.C:
+                    {
+                        if (_currentState == State.FirstNumberEntering ||
+                            _currentState == State.OperationUnderResult)
+                        {
+                            SetState(State.FirstNumberEntering);
+                            SetTextFields("0", "", "");
+                        }
+                        else if (_currentState == State.SecondNumberEntering)
+                        {
+                            SetState(State.ChangeOperationOrSecondNumberEntering);
+                            SetTextFields(FirstText, OperationText, "");
+                        }
+                        else if (_currentState == State.ChangeOperationOrSecondNumberEntering)
+                        {
+                            SetState(State.SecondNumberEntering);
+                            SetTextFields(FirstText, OperationText, "");
+                        }
+
+                        break;
+                    }
+
+                case InstantOperation.DeleteLastFigure:
+                    {
+                        if (_currentState == State.FirstNumberEntering)
+                        {
+                            if (FirstText.Length > 0)
+                            {
+                                SetTextFields(RemoveLastFigure(FirstText), OperationText, SecondText);
+                            }
+                        }
+                        if (_currentState == State.SecondNumberEntering ||
+                            _currentState == State.ChangeOperationOrSecondNumberEntering)
+                        {
+                            if (SecondText.Length > 0)
+                            {
+                                SetTextFields(FirstText, OperationText, RemoveLastFigure(SecondText));
+                            }
+                        }
+
+                        break;
+                    }
+
+                case InstantOperation.ChangeSign:
+                    {
+                        if (_currentState == State.FirstNumberEntering ||
+                            _currentState == State.OperationUnderResult)
+                        {
+                            SetTextFields(InverseSign(FirstText), OperationText, SecondText);
+                        }
+                        if (_currentState == State.SecondNumberEntering ||
+                            _currentState == State.ChangeOperationOrSecondNumberEntering)
+                        {
+                            SetTextFields(FirstText, OperationText, InverseSign(SecondText));
+                        }
+                        break;
+                    }
+            }
+        }
+
+        private string InverseSign(string number)
+        {
+            if (number.Length == 0)
+            {
+                return "";
             }
 
-            FirstText = result.ToString();
-            SecondText = "";
-            OperationText = "";
-            _currentOperation = null;
+            if (number == "0")
+            {
+                return number;
+            }
+
+            if (number.StartsWith("-"))
+            {
+                return number.Substring(1);
+            }
+            else
+            {
+                return "-" + number;
+            }
+        }
+
+        private string RemoveLastFigure(string number)
+        {
+            return number.Substring(0, number.Length - 1);
         }
 
         public void Handle(KeyboardFigurePressedEventModel message)
         {
-            if (_isFirstFieldActive)
+            if (_currentState == State.FirstNumberEntering)
             {
                 FirstText = AddFigure(FirstText, message.Figure);
-                _isOperationActive = true;
+                SetState(State.FirstNumberEntering);
             }
-            else if(_isSecondFieldActive)
+            else if(_currentState == State.SecondNumberEntering ||
+                    _currentState == State.ChangeOperationOrSecondNumberEntering)
             {
                 SecondText = AddFigure(SecondText, message.Figure);
-                _isOperationActive = false;
+                SetState(State.SecondNumberEntering);
             }
         }
 
@@ -208,5 +295,54 @@ namespace CalculatorWPF.ViewModels
         private bool _isSecondFieldActive = false;
         private bool _isOperationActive = false;
         private Operation? _currentOperation = null;
+
+        private State _currentState = State.FirstNumberEntering;
+
+        private void SetState(State state)
+        {
+            switch (state)
+            {
+                case State.FirstNumberEntering:
+                    _isFirstFieldActive = true;
+                    _isOperationActive = true;
+                    _isSecondFieldActive = false;
+                    break;
+
+                case State.ChangeOperationOrSecondNumberEntering:
+                    _isFirstFieldActive = false;
+                    _isOperationActive = true;
+                    _isSecondFieldActive = true;
+                    break;
+
+                case State.SecondNumberEntering:
+                    _isFirstFieldActive = false;
+                    _isOperationActive = false;
+                    _isSecondFieldActive = true;
+                    break;
+                
+                case State.OperationUnderResult:
+                    _isFirstFieldActive = false;
+                    _isOperationActive = true;
+                    _isSecondFieldActive = false;
+                    break;
+            }
+
+            _currentState = state;
+        }
+
+        public void SetTextFields(string firstText, string operationText, string secondText)
+        {
+            FirstText = firstText;
+            OperationText = operationText;
+            SecondText = secondText;
+        }
+
+        private enum State
+        {
+            FirstNumberEntering,
+            ChangeOperationOrSecondNumberEntering,
+            SecondNumberEntering,
+            OperationUnderResult
+        }
     }
 }
