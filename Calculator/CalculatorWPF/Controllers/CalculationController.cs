@@ -32,9 +32,9 @@ namespace CalculatorWPF.Controllers
 
         public event EventHandler<string> OnExceptionOccur;
 
-        public double Calculate(double number1, double number2, Operation operation)
+        public decimal Calculate(decimal number1, decimal number2, Operation operation)
         {
-            Func<double, double, double> calcDelegate = CalculateAddition;
+            Func<decimal, decimal, decimal> calcDelegate = CalculateAddition;
 
             switch (operation)
             {
@@ -47,22 +47,22 @@ namespace CalculatorWPF.Controllers
             return calcDelegate(number1, number2);
         }
 
-        public double CalculateAddition(double number, double numberToAdd)
+        public decimal CalculateAddition(decimal number, decimal numberToAdd)
         {
             return number + numberToAdd;
         }
 
-        public double CaclulateSubtraction(double number, double numberToSubtract)
+        public decimal CaclulateSubtraction(decimal number, decimal numberToSubtract)
         {
             return number - numberToSubtract;
         }
 
-        public double CaclulateMultiplication(double number, double multiplier)
+        public decimal CaclulateMultiplication(decimal number, decimal multiplier)
         {
             return number * multiplier;
         }
 
-        public double CaclulateDivision(double number, double divider)
+        public decimal CaclulateDivision(decimal number, decimal divider)
         {
             try
             {

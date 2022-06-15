@@ -101,7 +101,7 @@ namespace CalculatorWPF.ViewModels
 
         private string UpdateNumber(string text)
         {
-            string updatedNumber = double.Parse(text).ToString();
+            string updatedNumber = decimal.Parse(text).ToString();
             return updatedNumber;
         }
 
@@ -123,14 +123,14 @@ namespace CalculatorWPF.ViewModels
 
         public void Handle(KeyboardInstantOperationPressedEventModel message)
         {
-            double.TryParse(FirstText, out double number1);
-            double.TryParse(SecondText, out double number2);
+            decimal.TryParse(FirstText, out decimal number1);
+            decimal.TryParse(SecondText, out decimal number2);
 
             switch (message.InstantOperation)
             {
                 case InstantOperation.Equals:
                     {
-                        double result = _calculationController.Calculate(number1, number2, (Operation)_currentOperation);
+                        decimal result = _calculationController.Calculate(number1, number2, (Operation)_currentOperation);
                         SetState(State.OperationUnderResult);
                         SetTextFields(result.ToString(), "", "");
                         break;
