@@ -80,6 +80,8 @@ namespace CalculatorWPF.ViewModels
             
         }
 
+        #region +, -, *, / pressed
+
         public void Handle(KeyboardOperationPressedEventModel message)
         {
             SetState(State.ChangeOperationOrSecondNumberEntering);
@@ -99,6 +101,12 @@ namespace CalculatorWPF.ViewModels
             FirstText = UpdateNumber(FirstText);
         }
 
+        public async Task HandleAsync(KeyboardOperationPressedEventModel message, CancellationToken cancellationToken)
+        {
+            Task task = Task.Factory.StartNew(() => Handle(message), cancellationToken);
+            await task;
+        }
+
         private string UpdateNumber(string text)
         {
             if (decimal.TryParse(text, out decimal number))
@@ -110,6 +118,10 @@ namespace CalculatorWPF.ViewModels
                 return "0";
             }
         }
+
+        #endregion
+
+        #region . pressed
 
         public void Handle(KeyboardDotPressedEvent message)
         {
@@ -124,8 +136,51 @@ namespace CalculatorWPF.ViewModels
                 SecondText = AddDot(SecondText);
                 _isOperationActive = false;
             }
-
         }
+
+        public async Task HandleAsync(KeyboardDotPressedEvent message, CancellationToken cancellationToken)
+        {
+            Task task = Task.Factory.StartNew(() => Handle(message), cancellationToken);
+            await task;
+        }
+
+        private string AddDot(string number)
+        {
+            if (CountDotsInNumber(number) == 0)
+            {
+                if (number == "")
+                {
+                    return "0.";
+                }
+                else
+                {
+                    return number + '.';
+                }
+            }
+            else
+            {
+                return number;
+            }
+        }
+
+        private int CountDotsInNumber(string number)
+        {
+            int counter = 0;
+
+            for (int i = 0; i < number.Length; i++)
+            {
+                if (number[i] == '.')
+                {
+                    counter++;
+                }
+            }
+
+            return counter;
+        }
+
+        #endregion
+
+        #region =, C, CE, Del, [+/-] pressed
 
         public void Handle(KeyboardInstantOperationPressedEventModel message)
         {
@@ -218,6 +273,12 @@ namespace CalculatorWPF.ViewModels
             }
         }
 
+        public async Task HandleAsync(KeyboardInstantOperationPressedEventModel message, CancellationToken cancellationToken)
+        {
+            Task task = Task.Factory.StartNew(() => Handle(message), cancellationToken);
+            await task;
+        }
+
         private string InverseSign(string number)
         {
             if (number.Length == 0)
@@ -245,6 +306,10 @@ namespace CalculatorWPF.ViewModels
             return number.Substring(0, number.Length - 1);
         }
 
+        #endregion
+
+        #region Figure (0, 1, 2, 3, ..., 9) pressed
+
         public void Handle(KeyboardFigurePressedEventModel message)
         {
             if (_currentState == State.FirstNumberEntering)
@@ -260,38 +325,10 @@ namespace CalculatorWPF.ViewModels
             }
         }
 
-        private string AddDot(string number)
+        public async Task HandleAsync(KeyboardFigurePressedEventModel message, CancellationToken cancellationToken)
         {
-            if (CountDotsInNumber(number) == 0)
-            {
-                if (number == "")
-                {
-                    return "0.";
-                }
-                else
-                {
-                    return number + '.';
-                }
-            }
-            else
-            {
-                return number;
-            }
-        }
-
-        private int CountDotsInNumber(string number)
-        {
-            int counter = 0;
-
-            for(int i = 0; i < number.Length; i++)
-            {
-                if (number[i] == '.')
-                {
-                    counter++;
-                }
-            }
-
-            return counter;
+            Task task = Task.Factory.StartNew(() => Handle(message), cancellationToken);
+            await task;
         }
 
         private string AddFigure(string number, string figure)
@@ -305,6 +342,8 @@ namespace CalculatorWPF.ViewModels
                 return number + figure;
             }
         }
+
+        #endregion
 
         private bool _isFirstFieldActive = true;
         private bool _isSecondFieldActive = false;
