@@ -27,7 +27,7 @@ namespace CalculatorWPF.EventAggregation
             }
         }
 
-        public void Notify<T>(T message)
+        public async Task NotifyAsync<T>(T message)
         {
             Type messageType = typeof(T);
 
@@ -35,10 +35,12 @@ namespace CalculatorWPF.EventAggregation
             {
                 var subscribers = _subscribers[messageType];
 
+                List<Task> tasks = new List<Task>();
+
                 foreach (var subscriber in subscribers)
                 {
                     var sub = (IHandle<T>)subscriber;
-                    sub.Handle(message);
+                    await sub.HandleAsync(message, _tokenSource.Token);
                 }
             }
         }

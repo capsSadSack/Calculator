@@ -64,7 +64,7 @@ namespace CalculatorWPF.ViewModels
         {
             return new RelayCommand((obj) =>
             {
-                _eventAggregator.Notify(new KeyboardDotPressedEvent());
+                _eventAggregator.NotifyAsync(new KeyboardDotPressedEvent());
                 Debug.WriteLine("debug-dot");
             });
         }
@@ -73,7 +73,7 @@ namespace CalculatorWPF.ViewModels
         {
             return new RelayCommand((obj) =>
             {
-                _eventAggregator.Notify(new KeyboardFigurePressedEventModel(figure));
+                _eventAggregator.NotifyAsync(new KeyboardFigurePressedEventModel(figure));
                 Debug.WriteLine("debug");
             });
         }
@@ -82,7 +82,7 @@ namespace CalculatorWPF.ViewModels
         {
             return new RelayCommand((obj) =>
             {
-                _eventAggregator.Notify(new KeyboardOperationPressedEventModel(operation));
+                _eventAggregator.NotifyAsync(new KeyboardOperationPressedEventModel(operation));
                 Debug.WriteLine("debug-operation");
             });
         }
@@ -91,7 +91,7 @@ namespace CalculatorWPF.ViewModels
         {
             return new RelayCommand((obj) =>
             {
-                _eventAggregator.Notify(new KeyboardInstantOperationPressedEventModel(instantOperation));
+                _eventAggregator.NotifyAsync(new KeyboardInstantOperationPressedEventModel(instantOperation));
                 Debug.WriteLine("debug-instant-operation");
             });
         }

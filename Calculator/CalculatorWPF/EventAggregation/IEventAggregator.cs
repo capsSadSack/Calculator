@@ -8,7 +8,7 @@ namespace CalculatorWPF.EventAggregation
 {
     public interface IEventAggregator
     {
-        void Notify<T>(T message);
+        Task NotifyAsync<T>(T message);
 
         void Subscribe<T>(IHandle<T> subscriber);
 
