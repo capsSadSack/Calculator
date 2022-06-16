@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CalculatorWPF
+namespace CalculatorWPF.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for DialView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class DialView : UserControl
     {
-        public MainWindow()
+        public DialView()
         {
             InitializeComponent();
         }
