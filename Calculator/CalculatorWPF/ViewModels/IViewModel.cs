@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalculatorWPF.ViewModels
 {
-    internal interface IViewModel : IDisposable, INotifyPropertyChanged
+    public interface IViewModel : IDisposable, INotifyPropertyChanged
     {
 
     }

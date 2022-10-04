@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CalculatorWPF.ViewModels
 {
-    internal class DialViewModel : 
+    public class DialViewModel : 
         IViewModel, 
         IHandle<KeyboardDotPressedEvent>,
         IHandle<KeyboardFigurePressedEventModel>,

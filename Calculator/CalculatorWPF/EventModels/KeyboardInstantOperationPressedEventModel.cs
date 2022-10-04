@@ -2,7 +2,7 @@
 
 namespace CalculatorWPF.EventModels
 {
-    internal class KeyboardInstantOperationPressedEventModel
+    public class KeyboardInstantOperationPressedEventModel
     {
         public InstantOperation InstantOperation { get; private set; }
 

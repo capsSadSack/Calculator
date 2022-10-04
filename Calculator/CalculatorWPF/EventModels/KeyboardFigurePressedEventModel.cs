@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalculatorWPF.EventModels
 {
-    internal class KeyboardFigurePressedEventModel
+    public class KeyboardFigurePressedEventModel
     {
         public string Figure { get; private set; }
 

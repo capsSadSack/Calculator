@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalculatorWPF.Controllers
 {
-    internal class CalculationController
+    public class CalculationController
     {
         #region Singletone
 

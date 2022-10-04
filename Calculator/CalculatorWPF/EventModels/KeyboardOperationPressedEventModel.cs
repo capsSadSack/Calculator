@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalculatorWPF.EventModels
 {
-    internal class KeyboardOperationPressedEventModel
+    public class KeyboardOperationPressedEventModel
     {
         public Operation Operation { get; private set; }
 

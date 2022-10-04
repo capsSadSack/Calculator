@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CalculatorWPF.EventAggregation
 {
 
-    internal class EventAggregator : IEventAggregator, IDisposable
+    public class EventAggregator : IEventAggregator, IDisposable
     {
         private Dictionary<Type, List<object>> _subscribers = new Dictionary<Type, List<object>>();
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();

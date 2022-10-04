@@ -1,6 +1,6 @@
 ﻿namespace CalculatorWPF.EventModels
 {
-    internal class KeyboardDotPressedEvent
+    public class KeyboardDotPressedEvent
     {
     }
 }

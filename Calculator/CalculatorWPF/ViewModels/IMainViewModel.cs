@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalculatorWPF.ViewModels
 {
-    internal interface IMainViewModel : IViewModel
+    public interface IMainViewModel : IViewModel
     {
     }
 }

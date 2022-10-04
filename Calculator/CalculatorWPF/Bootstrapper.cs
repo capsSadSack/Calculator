@@ -12,7 +12,7 @@ using CalculatorWPF.Views;
 
 namespace CalculatorWPF
 {
-    internal static class Bootstrapper
+    public static class Bootstrapper
     {
         public static ILifetimeScope RootScope { get; private set; }
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CalculatorWPF.ViewModels
 {
-    internal class MainViewModel : IMainViewModel
+    public class MainViewModel : IMainViewModel
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         private IEventAggregator _eventAggregator;
